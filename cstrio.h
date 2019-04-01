@@ -112,4 +112,38 @@ char **strwords(const char *src, size_t *words_amnt) {
 	return words;
 }
 
+char ***fetch_words_lines(char *filename, size_t *n_lines, size_t **n_words) {
+	assert(filename != NULL);
+	assert(n_lines != NULL);
+	assert(*n_words == NULL);
+	FILE *blnc_f = NULL;
+	blnc_f = fopen(filename, "r");
+	if (blnc_f == NULL) {
+		perror("Error opening balances file");
+		return NULL;
+	}
+	size_t c_line = 0;
+	*n_lines = 16;
+	char ***lines = NULL;
+	lines = (char ***)malloc(sizeof(char **) * (*n_lines));
+	*n_words = (size_t *)malloc(sizeof(size_t) * (*n_lines));
+	char *line = NULL;
+	size_t line_len = 0;
+	while (fetch_line(&line, &line_len, blnc_f) != -1) {
+		if (line_len == 0) continue;
+		if (c_line == (*n_lines)) {
+			(*n_lines) *= 2;
+			lines = (char ***)realloc(lines, sizeof(char **) * (*n_lines));
+		}
+		if ((lines[c_line] = strwords(line, &((*n_words)[c_line]))) != NULL)
+			c_line++;
+		if (line != NULL) free(line);
+	}
+	if (c_line == 0) return NULL;
+	lines = (char ***)realloc(lines, sizeof(char **) * c_line);
+	*n_lines = c_line;
+	fclose(blnc_f);
+	return lines;
+}
+
 #endif  // #ifndef FOPS_H
