@@ -37,4 +37,29 @@ int fetch_line(char **line, size_t *line_len, FILE *strm) {
 	return (*line_len);
 }
 
+// Removes spaces from string str.
+// Returns the new string. Returned string has it's own memory.
+// Returned string is NULL terminated.
+// Original string str remains unchanged.
+// Original string must be NULL terminated.
+char *remove_whitespace(const char *src) {
+	assert(src != NULL);
+	size_t dst_size = strlen(src);  // dst string will have at most the same # of chars as src.
+	char *dst = (char *)malloc(sizeof(char) * dst_size);
+	size_t c_char = 0;
+	const char *src_char = src;
+	while ((*src_char) != '\0') {
+		dst[c_char] = *src_char++;
+		if (dst[c_char] != ' ' || (c_char > 0 && dst[c_char - 1] != ' '))
+			c_char++;
+	}
+	if (dst[c_char - 1] == ' ') {
+		dst[c_char - 1] = '\0';
+	} else {
+		dst = (char *)realloc(dst, sizeof(char) * (c_char + 1));
+		dst[c_char] = '\0';
+	}
+	return dst;
+}
+
 #endif  // #ifndef FOPS_H
