@@ -62,4 +62,54 @@ char *remove_whitespace(const char *src) {
 	return dst;
 }
 
+// Tokenizes the string str to it's words.
+// Returns the array of words. Each word has it's own memory.
+// String str and returned words do not have overlapping memory like strtok does.
+// Allocated memory is tightly allocated.
+// TODO: Change strwords to take a string delims like strtok does.
+char **strwords(const char *src, size_t *words_amnt) {
+	assert(words_amnt != NULL);
+	assert(src != NULL);
+	char *str = remove_whitespace(src);
+	char **words = NULL;  // Where the words will be stored.
+	size_t c_word = 0;  // Current word index.
+	size_t n_words = 2;  // Starting with space for two words.
+	words = (char **)malloc(sizeof(char *) * n_words);
+	assert(words != NULL);
+	char *next_char = str;  // The next character to copy.
+	size_t c_char = 0;  // The next character index in word.
+	size_t word_size = 4;  // Starting with space for two characters.
+	while ((*next_char) != '\0') {
+		if ((*next_char) == ' ') {
+			// Reallocate string memory for tight memory management.
+			words[c_word] = (char *)realloc(words[c_word], sizeof(char) * c_char + 1);
+			words[c_word][c_char] = '\0';  // Close off the word with the NULL character.
+			c_word++;
+			c_char = 0;
+			word_size = 4;  // Reset the word_size to 4. Previous word could've increased it.
+			next_char++;  // Ignore the space.
+			if (c_word == n_words) {
+				n_words *= 2;
+				words = (char **)realloc(words, sizeof(char *) * n_words);
+			}
+			continue;  // Next character might be the NULL character.
+		}
+		if (c_char == 0)
+			words[c_word] = (char *)malloc(sizeof(char) * word_size);
+		if (c_char == word_size) {
+			word_size *= 2;
+			words[c_word] = (char *)realloc(words[c_word], sizeof(char) * word_size);
+		}
+		words[c_word][c_char++] = *next_char++;
+	}
+	free(str);
+	words[c_word] = (char *)realloc(words[c_word], sizeof(char) * c_char + 1);
+	words[c_word][c_char] = '\0';
+	// Reallocate excess string pointers (char *) for tight memory management.
+	c_word++;
+	words = (char **)realloc(words, sizeof(char *) * c_word);
+	*words_amnt = c_word;
+	return words;
+}
+
 #endif  // #ifndef FOPS_H
