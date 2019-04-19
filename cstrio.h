@@ -30,7 +30,6 @@ int fetch_line(char **line, size_t *line_len, FILE *strm) {
 		if (c == EOF)
 			return -1;
 	} else {
-		//(*line_len)++;  // Space for the NULL byte.
 		*line = (char *)realloc(*line, sizeof(char) * (*line_len) + 1);
 		(*line)[(*line_len)] = '\0';
 	}
