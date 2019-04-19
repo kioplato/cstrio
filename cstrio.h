@@ -1,7 +1,7 @@
 // File: cstrio.h
 
-#ifndef FOPS_H
-#define FOPS_H
+#ifndef CSTRIO_H
+#define CSTRIO_H
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -158,4 +158,4 @@ void free_words_lines(char ***lines, size_t n_lines, size_t *n_words) {
 
 // TODO: Implement write_words_lines() function which writes lines of words to a file.
 
-#endif  // #ifndef FOPS_H
+#endif  // #ifndef CSTRIO_H
