@@ -6,7 +6,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <assert.h>
 
 // Allocates memory for a line for exactly one line up to newline or EOF.
 // Returns # of characters read.
@@ -42,7 +41,6 @@ int fetch_line(char **line, size_t *line_len, FILE *strm) {
 // Original string str remains unchanged.
 // Original string must be NULL terminated.
 char *remove_whitespace(const char *src) {
-	assert(src != NULL);
 	size_t dst_size = strlen(src);  // dst string will have at most the same # of chars as src.
 	char *dst = (char *)malloc(sizeof(char) * dst_size);
 	size_t c_char = 0;
@@ -67,14 +65,15 @@ char *remove_whitespace(const char *src) {
 // Allocated memory is tightly allocated.
 // TODO: Change strwords to take a string delims like strtok does.
 char **strwords(const char *src, size_t *words_amnt) {
-	assert(words_amnt != NULL);
-	assert(src != NULL);
 	char *str = remove_whitespace(src);
 	char **words = NULL;  // Where the words will be stored.
 	size_t c_word = 0;  // Current word index.
 	size_t n_words = 2;  // Starting with space for two words.
 	words = (char **)malloc(sizeof(char *) * n_words);
-	assert(words != NULL);
+	if (words == NULL) {
+		perror("Error allocating memory for words");
+		return NULL;
+	}
 	char *next_char = str;  // The next character to copy.
 	size_t c_char = 0;  // The next character index in word.
 	size_t word_size = 4;  // Starting with space for two characters.
@@ -112,9 +111,6 @@ char **strwords(const char *src, size_t *words_amnt) {
 }
 
 char ***fetch_words_lines(char *filename, size_t *n_lines, size_t **n_words) {
-	assert(filename != NULL);
-	assert(n_lines != NULL);
-	assert(*n_words == NULL);
 	FILE *blnc_f = NULL;
 	blnc_f = fopen(filename, "r");
 	if (blnc_f == NULL) {
