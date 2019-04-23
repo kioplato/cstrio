@@ -160,6 +160,12 @@ void print_words_lines(char ***lines, size_t n_lines, size_t *n_words) {
 	}
 }
 
+// Free all the memory allocated for the lines and words.
+// Pass 0 to free_words if you don't want to free the memory for each word.
+// Pass 1 to free_words if you want to free the memory for each word.
+// lines is the words per line, for n_lines lines.
+// n_lines is the amount of lines in lines pointer.
+// n_words is the amount of words per line.
 void free_words_lines(char ***lines, size_t n_lines, size_t *n_words, int free_words) {
 	for (size_t c_line = 0; c_line < n_lines; c_line++) {
 		if (free_words == 1) {
