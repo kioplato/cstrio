@@ -141,10 +141,12 @@ char ***fetch_words_lines(char *filename, size_t *n_lines, size_t **n_words) {
 	return lines;
 }
 
-void free_words_lines(char ***lines, size_t n_lines, size_t *n_words) {
+void free_words_lines(char ***lines, size_t n_lines, size_t *n_words, int free_words) {
 	for (size_t c_line = 0; c_line < n_lines; c_line++) {
-		for (size_t c_word = 0; c_word < n_words[c_line]; c_word++)
-			free(lines[c_line][c_word]);
+		if (free_words == 1) {
+			for (size_t c_word = 0; c_word < n_words[c_line]; c_word++)
+				free(lines[c_line][c_word]);
+		}
 		free(lines[c_line]);
 	}
 	free(lines);
