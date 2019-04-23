@@ -110,6 +110,10 @@ char **strwords(const char *src, size_t *words_amnt) {
 	return words;
 }
 
+// Returns for each line in the file filename the respective words.
+// filename is the path to the file.
+// n_lines is the amount of lines stored in returned array.
+// n_words is the amount of words per line.
 char ***fetch_words_lines(char *filename, size_t *n_lines, size_t **n_words) {
 	FILE *blnc_f = NULL;
 	blnc_f = fopen(filename, "r");
