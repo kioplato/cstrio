@@ -7,6 +7,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+// TODO: Lock the files before opening them.
+
 // Allocates memory for a line for exactly one line up to newline or EOF.
 // Returns # of characters read.
 int fetch_line(char **line, size_t *line_len, FILE *strm) {
