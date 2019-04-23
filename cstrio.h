@@ -141,6 +141,17 @@ char ***fetch_words_lines(char *filename, size_t *n_lines, size_t **n_words) {
 	return lines;
 }
 
+void print_words_lines(char ***lines, size_t n_lines, size_t *n_words) {
+	for (size_t c_line = 0; c_line < n_lines; ++c_line) {
+		for (size_t c_word = 0; c_word < n_words[c_line]; ++c_word) {
+			printf("%s", lines[c_line][c_word]);
+			if (c_word < n_words[c_line] - 1)
+				printf(" ");
+		}
+		printf("\n");
+	}
+}
+
 void free_words_lines(char ***lines, size_t n_lines, size_t *n_words, int free_words) {
 	for (size_t c_line = 0; c_line < n_lines; c_line++) {
 		if (free_words == 1) {
