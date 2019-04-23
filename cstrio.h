@@ -145,6 +145,10 @@ char ***fetch_words_lines(char *filename, size_t *n_lines, size_t **n_words) {
 	return lines;
 }
 
+// Prints the words for each line at stdout seperated with newline.
+// lines is the words per line, for n_lines lines.
+// n_lines is the amount of lines in lines array.
+// n_words is the amount of words per line.
 void print_words_lines(char ***lines, size_t n_lines, size_t *n_words) {
 	for (size_t c_line = 0; c_line < n_lines; ++c_line) {
 		for (size_t c_word = 0; c_word < n_words[c_line]; ++c_word) {
